@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>Streaming RPG</title>
+
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:Arial, sans-serif;
+    }
+
+    body{
+        background:#1e1e2f;
+        color:white;
+        min-height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+    }
+
+    .screen{
+        text-align:center;
+        width:100%;
+        max-width:500px;
+        padding:20px;
+    }
+
+    h1{
+        margin-bottom:20px;
+    }
+
+input{
+    width:300px;
+    max-width:90%;
+    padding:12px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    margin-bottom:15px;
+    text-align:center;
+}
+
+#footerText{
+    position:fixed;
+    bottom:10px;
+    right:10px;
+    color:white;
+    font-size:14px;
+    opacity:0.7;
+}
+
+.streamer-card{
+    background:#2b2b45;
+    padding:15px;
+    border-radius:12px;
+    width:250px;
+    margin:10px auto;
+    text-align:center;
+}
+
+button{
+    padding:12px 24px;
+    margin:8px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#5865f2;
+    color:white;
+    transition:0.2s;
+    width:auto;
+    min-width:180px;
+}
+
+    button:hover{
+        background:#4752c4;
+    }
+
+    #menu{
+        display:none;
+    }
+    
+.menu-buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+    
+    .screen{
+        width:1200px;
+        max-width:none;
+    }
+
+    .welcome{
+        font-size:32px;
+        margin-bottom:15px;
+    }
+
+    .money{
+        font-size:28px;
+        color:gold;
+        margin-bottom:25px;
+    }
+
+#battleArea{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    margin-top:30px;
+}
+
+#playerSide,
+#enemySide{
+    width:45%;
+}
+
+.hpBar{
+    width:100%;
+    height:20px;
+    background:#444;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.hpFill{
+    height:100%;
+    background:limegreen;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Ekran logowania -->
+<div class="screen" id="login">
+    <h1>Streaming RPG</h1>
+
+    <input type="text" id="nickname" placeholder="Wpisz nazwę użytkownika">
+
+    <button onclick="startGame()">Start</button>
+</div>
+
+<div class="screen" id="starterScreen" style="display:none;">
+
+    <h1>Wybierz Startowego Streamera</h1>
+
+    <div id="starterCharacters"></div>
+
+</div>
+
+<!-- Menu główne -->
+<div class="screen" id="menu">
+    <div class="welcome" id="welcomeText"></div>
+    
+
+    <div class="money">
+        💰 <span id="money">0</span> zł
+    </div>
+
+    <div class="menu-buttons">
+        <button onclick="changeNick()">
+            Zmień Nick
+        </button>
+        <button onclick="openStreamers()">Streamerzy</button>
+        <button>Coming Soon (Questy)</button>
+        <button>Coming Soon (Sklep)</button>
+        <button onclick="openPlayMenu()">Graj</button>
+        <button onclick="resetSave()">
+            Usuń Zapis
+        </button>
+    </div>
+</div>
+
+<!-- Ekran Streamerzy -->
+<div class="screen" id="streamersScreen" style="display:none;">
+
+    <h2 style="margin-bottom:30px;">
+        Twój Team (Max 4)
+    </h2>
+
+    <div id="teamContainer" style="margin-bottom:120px;">
+    </div>
+
+    <div style="
+        position:fixed;
+        bottom:20px;
+        left:50%;
+        transform:translateX(-50%);
+        width:90%;
+        max-width:600px;
+    ">
+        <h2 style="margin-bottom:15px;">
+            Twoi Streamerzy
+        </h2>
+
+        <div id="streamersContainer"></div>
+    </div>
+
+    <button onclick="backToMenu()" style="margin-top:30px;">
+        Powrót
+    </button>
+
+</div>
+
+<div class="screen" id="playScreen" style="display:none;">
+
+    <h1>Wybierz Poziom</h1>
+
+    <button
+        style="background:green;"
+        onclick="playDifficulty('easy')">
+        Easy
+    </button>
+
+    <button
+        id="mediumBtn"
+        style="background:gold;"
+        onclick="playDifficulty('medium')">
+        Medium 🔒
+    </button>
+
+    <button
+        id="hardBtn"
+        style="background:red;"
+        onclick="playDifficulty('hard')">
+        Hard 🔒
+    </button>
+
+    <button
+        id="impossibleBtn"
+        style="background:darkred;"
+        onclick="playDifficulty('impossible')">
+        Inposible 🔒
+    </button>
+
+    <br><br>
+
+    <button onclick="backFromPlay()">
+        Powrót
+    </button>
+
+</div>
+
+<div class="screen" id="battleScreen" style="display:none;">
+
+    <h1>Walka</h1>
+
+    <div id="battleArea">
+
+        <div id="playerSide"></div>
+
+        <div id="enemySide"></div>
+
+    </div>
+
+    <h2 id="battleResult"></h2>
+
+</div>
+
+<div id="footerText">
+    Streaming RPG v1.0.1
+</div>
+
+<script>
+    
+let playerNick = "";
+let team = [];
+let money = 0;
+
+const ownedStreamers = [];
+
+const starterCharacters = [
+
+    {
+        name: "AlbiSuperBryka",
+        image: "AlbiSuperBryka.png",
+        sound: "AlbiSuperBryka.mp3",
+        damage: 5,
+        hp: 20,
+        speed: 0.5
+    },
+
+    {
+        name: "Arkadiojose",
+        image: "Arkadiojose.png",
+        sound: "Arkadiojose.mp3",
+        damage: 7,
+        hp: 16,
+        speed: 0.7
+    },
+
+    {
+        name: "Nieuczesana",
+        image: "Nieuczesana.png",
+        sound: "Nieuczesana.mp3",
+        damage: 4,
+        hp: 25,
+        speed: 0.9
+    }
+
+];
+
+const allStreamers = [
+    ...starterCharacters
+];
+
+
+const enemies = {
+
+    easy: [
+        {
+            name: "arcanelde",
+            damage: 5,
+            hp: 16,
+            speed: 0.8
+        },
+        {
+            name: "RaczQ",
+            damage: 8,
+            hp: 10,
+            speed: 1.1
+        },
+        {
+            name: "krzvwa",
+            damage: 3,
+            hp: 20,
+            speed: 0.75
+        }
+    ],
+
+    medium: [
+        {
+            name: "zikus98",
+            damage: 5,
+            hp: 22,
+            speed: 0.7
+        },
+        {
+            name: "wguardian01",
+            damage: 9,
+            hp: 13,
+            speed: 0.95
+        }
+    ]
+
+};
+
+let easyGames = 0;
+let mediumGames = 0;
+let hardGames = 0;
+let battleIntervals = [];
+let mediumUnlocked = false;
+let hardUnlocked = false;
+let impossibleUnlocked = false;
+let currentDifficulty = "";
+
+function saveGame(){
+
+    const saveData = {
+
+        nick: playerNick,
+        money: money,
+
+        easyGames: easyGames,
+        mediumGames: mediumGames,
+        hardGames: hardGames,
+
+        mediumUnlocked: mediumUnlocked,
+        hardUnlocked: hardUnlocked,
+        impossibleUnlocked: impossibleUnlocked,
+
+        ownedStreamers: ownedStreamers.map(s => s.name),
+        team: team.map(s => s.name)
+
+    };
+    
+    console.log(saveData);
+
+    localStorage.setItem(
+        "streamingRPGSave",
+        JSON.stringify(saveData)
+    );
+}
+
+function loadGame(){
+
+    const save =
+        localStorage.getItem("streamingRPGSave");
+
+    if(!save) return false;
+
+    const data = JSON.parse(save);
+
+    playerNick = data.nick;
+
+    money = data.money || 0;
+
+    easyGames = data.easyGames || 0;
+    mediumGames = data.mediumGames || 0;
+    hardGames = data.hardGames || 0;
+
+    mediumUnlocked = data.mediumUnlocked || false;
+    hardUnlocked = data.hardUnlocked || false;
+    impossibleUnlocked = data.impossibleUnlocked || false;
+
+    ownedStreamers.length = 0;
+
+    if(data.ownedStreamers){
+
+        data.ownedStreamers.forEach(name => {
+
+            const streamer =
+                allStreamers.find(
+                    s => s.name === name
+                );
+
+            if(streamer){
+                ownedStreamers.push(streamer);
+            }
+
+        });
+
+    }
+
+    team.length = 0;
+
+    if(data.team){
+
+        data.team.forEach(name => {
+
+            const streamer =
+                ownedStreamers.find(
+                    s => s.name === name
+                );
+
+            if(streamer){
+                team.push(streamer);
+            }
+
+        });
+
+    }
+
+    document.getElementById("money").textContent =
+        money;
+
+    document.getElementById("welcomeText").textContent =
+        "Witaj " + playerNick;
+
+    return true;
+}
+
+function resetSave(){
+
+    if(confirm("Usunąć cały zapis?")){
+
+        localStorage.removeItem(
+            "streamingRPGSave"
+        );
+
+        location.reload();
+    }
+
+}
+
+function startGame() {
+
+    const nick =
+        document.getElementById("nickname").value.trim();
+
+    if(nick === ""){
+        alert("Wpisz nazwę użytkownika!");
+        return;
+    }
+
+    playerNick = nick;
+
+    document.getElementById("login").style.display =
+        "none";
+
+    document.getElementById("starterScreen").style.display =
+        "block";
+
+    renderStarterCharacters();
+}
+
+function openStreamers() {
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("streamersScreen").style.display = "block";
+
+    renderTeam();
+    renderOwnedStreamers();
+}
+
+function backToMenu() {
+    document.getElementById("streamersScreen").style.display = "none";
+    document.getElementById("menu").style.display = "block";
+}
+
+function renderTeam() {
+
+    const container =
+        document.getElementById("teamContainer");
+
+    container.innerHTML = "";
+
+    team.forEach((streamer, index) => {
+
+        container.innerHTML += `
+<div style="
+    background:#2b2b45;
+    padding:15px;
+    border-radius:12px;
+    margin:10px auto;
+    width:250px;
+">
+            <img src="${streamer.image}"
+                 width="100"
+                 height="100"
+                 alt="${streamer.name}">
+
+            <h3>${streamer.name}</h3>
+
+            <p>Damage: ${streamer.damage}</p>
+            <p>HP: ${streamer.hp}</p>
+            <p>Speed: ${streamer.speed}</p>
+
+            <button onclick="removeFromTeam(${index})">
+                Usuń z Teamu
+            </button>
+        </div>
+        `;
+    });
+}
+
+function renderOwnedStreamers() {
+
+    const container =
+        document.getElementById("streamersContainer");
+
+    container.innerHTML = "";
+
+    ownedStreamers.forEach(streamer => {
+
+        const inTeam = team.includes(streamer);
+
+        container.innerHTML += `
+<div style="
+    background:#2b2b45;
+    padding:15px;
+    border-radius:12px;
+    margin:10px auto;
+    width:250px;
+">
+            <img src="${streamer.image}"
+                 width="80"
+                 height="80"
+                 alt="${streamer.name}">
+
+            <h3>${streamer.name}</h3>
+
+            <p>Damage: ${streamer.damage}</p>
+            <p>HP: ${streamer.hp}</p>
+            <p>Speed: ${streamer.speed}</p>
+
+            ${
+                inTeam
+                ? '<button disabled>Jest w Teamie</button>'
+                : `<button onclick="addToTeam('${streamer.name}')">Dodaj do Teamu</button>`
+            }
+        </div>
+        `;
+    });
+}
+
+function addToTeam(streamerName) {
+
+    if(team.length >= 4) {
+        alert("Team może mieć maksymalnie 4 streamerów!");
+        return;
+    }
+
+    const streamer = ownedStreamers.find(
+        s => s.name === streamerName
+    );
+
+    if(streamer && !team.includes(streamer)) {
+        team.push(streamer);
+    }
+
+    renderTeam();
+    renderOwnedStreamers();
+}
+
+function removeFromTeam(index) {
+
+    team.splice(index, 1);
+
+    renderTeam();
+    renderOwnedStreamers();
+}
+
+function openPlayMenu(){
+
+    if(team.length < 1){
+        alert("Musisz mieć przynajmniej 1 streamera w teamie!");
+        return;
+    }
+
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("playScreen").style.display = "block";
+
+    updateDifficultyButtons();
+}
+
+function backFromPlay(){
+    document.getElementById("playScreen").style.display = "none";
+    document.getElementById("menu").style.display = "block";
+}
+
+function checkUnlocks(){
+
+    // Medium
+    if(!mediumUnlocked && easyGames >= 15){
+        mediumUnlocked = true;
+        alert("Odblokowano Medium!");
+    }
+
+    // Hard
+    if(
+        mediumUnlocked &&
+        !hardUnlocked &&
+        easyGames >= 0 &&
+        mediumGames >= 15
+    ){
+        hardUnlocked = true;
+        alert("Odblokowano Hard!");
+    }
+
+    // Inposible
+    if(
+        hardUnlocked &&
+        !impossibleUnlocked &&
+        easyGames >= 0 &&
+        mediumGames >= 0 &&
+        hardGames >= 15
+    ){
+        impossibleUnlocked = true;
+        alert("Odblokowano Inposible!");
+    }
+}
+
+function updateDifficultyButtons(){
+
+    document.getElementById("mediumBtn").innerHTML =
+        mediumUnlocked ? "Medium" : "Medium 🔒";
+
+    document.getElementById("hardBtn").innerHTML =
+        hardUnlocked ? "Hard" : "Hard 🔒";
+
+    document.getElementById("impossibleBtn").innerHTML =
+        impossibleUnlocked ? "Inposible" : "Inposible 🔒";
+}
+
+function playDifficulty(mode){
+
+    if(mode === "medium" && !mediumUnlocked){
+        alert("Medium jeszcze zablokowany!");
+        return;
+    }
+
+    if(mode === "hard" && !hardUnlocked){
+        alert("Hard jeszcze zablokowany!");
+        return;
+    }
+
+    if(mode === "impossible" && !impossibleUnlocked){
+        alert("Inposible jeszcze zablokowany!");
+        return;
+    }
+
+    if(mode === "easy"){
+        easyGames++;
+    }
+
+    if(mode === "medium"){
+        mediumGames++;
+    }
+
+    if(mode === "hard"){
+        hardGames++;
+    }
+
+    checkUnlocks();
+    startBattle(mode);
+}
+
+function startBattle(mode){
+
+    currentDifficulty = mode;
+
+    const enemyPool = enemies[mode];
+
+    const enemy =
+        JSON.parse(
+            JSON.stringify(
+                enemyPool[Math.floor(Math.random() * enemyPool.length)]
+            )
+        );
+
+    const player =
+        JSON.parse(
+            JSON.stringify(team[0])
+        );
+
+    player.currentHp = player.hp;
+    enemy.currentHp = enemy.hp;
+
+    document.getElementById("playScreen").style.display = "none";
+    document.getElementById("battleScreen").style.display = "block";
+
+    renderBattle(player, enemy);
+
+    startAutoBattle(player, enemy);
+}
+
+function backFromBattle(){
+
+    document.getElementById("battleScreen").style.display = "none";
+    document.getElementById("playScreen").style.display = "block";
+
+}
+
+function renderBattle(player, enemy){
+
+    document.getElementById("playerSide").innerHTML = `
+        <div class="streamer-card">
+
+            <img src="${player.image}" width="120">
+
+            <h3>${player.name}</h3>
+
+            <div class="hpBar">
+                <div
+                    class="hpFill"
+                    style="width:${(player.currentHp/player.hp)*100}%">
+                </div>
+            </div>
+
+            <p>${player.currentHp} / ${player.hp} HP</p>
+
+        </div>
+    `;
+
+    document.getElementById("enemySide").innerHTML = `
+        <div class="streamer-card">
+
+            <h3>${enemy.name}</h3>
+
+            <div class="hpBar">
+                <div
+                    class="hpFill"
+                    style="width:${(enemy.currentHp/enemy.hp)*100}%">
+                </div>
+            </div>
+
+            <p>${enemy.currentHp} / ${enemy.hp} HP</p>
+
+        </div>
+    `;
+}
+
+function startAutoBattle(player, enemy){
+
+    battleIntervals.forEach(clearInterval);
+    battleIntervals = [];
+
+    const playerAttack = setInterval(() => {
+
+        enemy.currentHp -= player.damage;
+
+        if(enemy.currentHp < 0){
+            enemy.currentHp = 0;
+        }
+
+        renderBattle(player, enemy);
+
+        if(enemy.currentHp <= 0){
+
+            finishBattle("win");
+
+        }
+
+    }, player.speed * 1000);
+
+    const enemyAttack = setInterval(() => {
+
+        player.currentHp -= enemy.damage;
+
+        if(player.currentHp < 0){
+            player.currentHp = 0;
+        }
+
+        renderBattle(player, enemy);
+
+        if(player.currentHp <= 0){
+
+            finishBattle("lose");
+
+        }
+
+    }, enemy.speed * 1000);
+
+    battleIntervals.push(playerAttack);
+    battleIntervals.push(enemyAttack);
+}
+
+function finishBattle(result){
+
+    battleIntervals.forEach(clearInterval);
+
+    if(result === "win"){
+
+        const reward = getReward(currentDifficulty);
+
+        money += reward;
+
+        document.getElementById("money").textContent = money;
+
+        saveGame(); // TO JEST WAŻNE
+
+        alert("🏆 Wygrałeś! +" + reward + " zł");
+
+    }else{
+
+        alert("💀 Przegrałeś!");
+    }
+
+    document.getElementById("battleScreen").style.display = "none";
+    document.getElementById("menu").style.display = "block";
+}
+
+function getReward(mode){
+
+    switch(mode){
+
+        case "easy":
+            return 5;
+
+        case "medium":
+            return 12;
+
+        case "hard":
+            return 20;
+
+        case "impossible":
+            return 42;
+
+        default:
+            return 0;
+    }
+
+}
+
+function changeNick(){
+
+    const newNick =
+        prompt("Podaj nowy nick:");
+
+    if(!newNick) return;
+
+    playerNick = newNick;
+
+    document.getElementById("welcomeText").textContent =
+        "Witaj " + playerNick;
+
+    saveGame();
+}
+
+function renderStarterCharacters(){
+
+    let html = "";
+
+    starterCharacters.forEach(streamer => {
+
+        html += `
+            <div class="streamer-card">
+
+                <img src="${streamer.image}" width="120">
+
+                <h3>${streamer.name}</h3>
+
+                <p>Damage: ${streamer.damage}</p>
+                <p>HP: ${streamer.hp}</p>
+                <p>Speed: ${streamer.speed}</p>
+
+                <button onclick="selectStarter('${streamer.name}')">
+                    Wybierz
+                </button>
+
+            </div>
+        `;
+    });
+
+    document.getElementById("starterCharacters").innerHTML = html;
+}
+
+function selectStarter(name){
+
+    const starter = starterCharacters.find(
+        s => s.name === name
+    );
+
+    if(!starter) return;
+
+    if(starter.sound){
+
+        const audio = new Audio(starter.sound);
+
+        audio.volume = 1;
+
+        audio.play().catch(() => {});
+    }
+
+    if(!ownedStreamers.some(s => s.name === starter.name)){
+        ownedStreamers.push(starter);
+    }
+
+    if(!team.some(s => s.name === starter.name)){
+        team.push(starter);
+    }
+
+    saveGame();
+
+    setTimeout(() => {
+
+        document.getElementById("starterScreen").style.display =
+            "none";
+
+        document.getElementById("menu").style.display =
+            "block";
+
+        document.getElementById("welcomeText").textContent =
+            "Witaj " + playerNick;
+
+    }, 500);
+
+}
+
+window.onload = function(){
+
+    if(loadGame()){
+
+        document.getElementById("login").style.display =
+            "none";
+
+        document.getElementById("menu").style.display =
+            "block";
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
