@@ -687,6 +687,20 @@ color:white;
             </button>
 
         </div>
+        
+        <div class="shop-card">
+            <div style="font-size:60px;">🎵</div>
+            <h2>Music Pack</h2>
+            <p>Cena: 250 zł</p>
+            <button onclick="buyMusicPack()">Kup Paczkę</button>
+        </div>
+
+        <div class="shop-card">
+            <div style="font-size:60px;">🏛</div>
+            <h2>Politics Pack</h2>
+            <p>Cena: 600 zł</p>
+            <button onclick="buyPoliticsPack()">Kup Paczkę</button>
+        </div>
 
     </div>
 
@@ -895,7 +909,7 @@ letter-spacing:2px;
 text-shadow:0 0 10px cyan;
 opacity:0.8;
 ">
-    Streaming RPG v1.0.4.
+    Streaming RPG v1.0.5
 </div>
 
 <script>
@@ -941,6 +955,22 @@ const allStreamers = [
     ...starterCharacters,
     
     {
+        name: "AjronekTV",
+        image: "AjronekTV.png",
+        damage: 8,
+        hp: 18,
+        speed: 0.5
+    },
+    
+    {
+        name: "ArQuel",
+        image: "ArQuel.png",
+        damage: 6,
+        hp: 23,
+        speed: 0.75
+    },
+    
+    {
         name: "Dejmcent",
         image: "Dejmcent.png",
         damage: 5,
@@ -949,12 +979,37 @@ const allStreamers = [
     },
     
     {
+        name: "Diables",
+        image: "Diables.png",
+        damage: 5,
+        hp: 26,
+        speed: 0.95
+    },
+     
+    {
         name: "Dizowskyy",
         image: "Dizowskyy.png",
         damage: 6,
         hp: 20,
         speed: 0.4
     },
+    
+    {
+        name: "Grzegorz",
+        image: "Grzegorz.png",
+        damage: 8,
+        hp: 25,
+        speed: 0.5
+    },
+    
+    {
+        name: "Gulczyk_",
+        image: "Gulczyk_.png",
+        damage: 1,
+        hp: 12,
+        speed: 0.15
+    },
+    
     
     {
         name: "Kkamcia",
@@ -965,27 +1020,59 @@ const allStreamers = [
     },
     
     {
-        name: "Diables",
-        image: "Diables.png",
-        damage: 5,
-        hp: 26,
-        speed: 0.95
-    },
-    
-    {
-        name: "Gulczyk_",
-        image: "Gulczyk_.png",
-        damage: 1,
-        hp: 12,
-        speed: 0.15
-    },
-
-    {
         name: "Pablo",
         image: "Pablo.png",
         damage: 6,
         hp: 20,
         speed: 0.7
+    },
+    
+    {
+        name: "Palion",
+        image: "Palion.png",
+        damage: 6,
+        hp: 24,
+        speed: 0.35
+    },
+    
+    {
+        name: "Rafał",
+        image: "Rafał.png",
+        damage: 7,
+        hp: 23,
+        speed: 0.4
+    },
+    
+    {
+        name: "Sławomir",
+        image: "Sławomir.png",
+        damage: 9,
+        hp: 20,
+        speed: 0.55
+    },
+    
+    {
+        name: "Srokaaa_",
+        image: "Srokaaa_.png",
+        damage: 5,
+        hp: 18,
+        speed: 0.67
+    },
+    
+    {
+        name: "Szymon",
+        image: "Szymon.png",
+        damage: 9,
+        hp: 20,
+        speed: 0.55
+    },
+    
+    {
+        name: "TryHardNinja",
+        image: "TryHardNinja.png",
+        damage: 7,
+        hp: 12,
+        speed: 0.5
     },
     
     {
@@ -1004,25 +1091,55 @@ const allStreamers = [
         speed: 0.35
     },
     
+    {
+        name: "Young Multi",
+        image: "Young Multi.png",
+        damage: 7,
+        hp: 18,
+        speed: 0.8
+    },
+    
 ];
 
 const twitchPackPool = [
     "AlbiSuperBryka",
-    "Arkadiojose",
     "Dejmcent",
+    "Diables",
     "Kkamcia",
     "Nieuczesana",
-    "Pablo"
+    "Pablo",
+    "Srokaaa_.",
 ];
 
 const youtubePackPool = [
+    "AjronekTV",
+    "ArQuel",
     "Dizowskyy",
+    "Palion",
     "Wojan Games",
+];
+
+const musicPackPool = [
+    "TryHardNinja",
+    "Young Multi"
+];
+
+const politicsPackPool = [
+    "Grzegorz",
+    "Rafał",
+    "Sławomir",
+    "Szymon"
 ];
 
 const enemies = {
 
     easy: [
+        {
+            name: "aalmondziak",
+            damage: 8,
+            hp: 16,
+            speed: 1.05
+        },
         {
             name: "arcanelde",
             damage: 5,
@@ -1040,6 +1157,12 @@ const enemies = {
             damage: 8,
             hp: 10,
             speed: 1.1
+        },
+        {
+            name: "stawasukiiiii",
+            damage: 3,
+            hp: 18,
+            speed: 0.75
         }
     ],
 
@@ -1847,6 +1970,86 @@ function buyYouTubePack(){
                 "📺 Trafiłeś:\n\n" +
                 streamer.name
             );
+        }
+
+        saveGame();
+    }
+}
+
+function buyMusicPack(){
+
+    if(money < 250){
+        alert("Masz za mało zł!");
+        return;
+    }
+
+    money -= 250;
+    document.getElementById("money").textContent = money;
+
+    const randomName =
+        musicPackPool[Math.floor(Math.random() * musicPackPool.length)];
+
+    const streamer =
+        allStreamers.find(s => s.name === randomName);
+
+    if(streamer){
+
+        const alreadyOwned = ownedStreamers.some(
+            s => s.name === streamer.name
+        );
+
+        if(alreadyOwned){
+
+            money += 2;
+            document.getElementById("money").textContent = money;
+
+            alert("🎵 Trafiłeś:\n\n" + streamer.name + "\n\nDuplikat! +2 zł");
+
+        }else{
+
+            ownedStreamers.push(streamer);
+
+            alert("🎵 Trafiłeś:\n\n" + streamer.name);
+        }
+
+        saveGame();
+    }
+}
+
+function buyPoliticsPack(){
+
+    if(money < 600){
+        alert("Masz za mało zł!");
+        return;
+    }
+
+    money -= 600;
+    document.getElementById("money").textContent = money;
+
+    const randomName =
+        politicsPackPool[Math.floor(Math.random() * politicsPackPool.length)];
+
+    const streamer =
+        allStreamers.find(s => s.name === randomName);
+
+    if(streamer){
+
+        const alreadyOwned = ownedStreamers.some(
+            s => s.name === streamer.name
+        );
+
+        if(alreadyOwned){
+
+            money += 2;
+            document.getElementById("money").textContent = money;
+
+            alert("🏛 Trafiłeś:\n\n" + streamer.name + "\n\nDuplikat! +2 zł");
+
+        }else{
+
+            ownedStreamers.push(streamer);
+
+            alert("🏛 Trafiłeś:\n\n" + streamer.name);
         }
 
         saveGame();
