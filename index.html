@@ -645,23 +645,55 @@ color:white;
         🛒 SKLEP
     </h1>
 
-    <div class="shop-card">
+    <div style="
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    flex-wrap:wrap;
+    ">
 
-        <div style="font-size:60px;">📦</div>
+        <!-- Twitch Pack -->
+        <div class="shop-card">
 
-        <h2>Twitch Pack</h2>
+            <div style="font-size:60px;">📦</div>
 
-        <p style="font-size:20px;">
-            Cena: <span style="color:gold;">50 Coins</span>
-        </p>
+            <h2>Twitch Pack</h2>
 
-        <button class="shopBuyBtn" onclick="buyTwitchPack()">
-            Kup Paczkę
-        </button>
+            <p style="font-size:20px;">
+                Cena: <span style="color:gold;">50 zł</span>
+            </p>
+
+            <button class="shopBuyBtn"
+                    onclick="buyTwitchPack()">
+                Kup Paczkę
+            </button>
+
+        </div>
+
+        <!-- YouTube Pack -->
+        <div class="shop-card">
+
+            <div style="font-size:60px;">📺</div>
+
+            <h2>YouTube Pack</h2>
+
+            <p style="font-size:20px;">
+                Cena: <span style="color:red;">100 zł</span>
+            </p>
+
+            <button class="shopBuyBtn"
+                    onclick="buyYouTubePack()">
+                Kup Paczkę
+            </button>
+
+        </div>
 
     </div>
 
-    <button class="backBtn" onclick="closeShop()">
+    <br><br>
+
+    <button class="backBtn"
+            onclick="closeShop()">
         ⬅ Powrót
     </button>
 
@@ -863,7 +895,7 @@ letter-spacing:2px;
 text-shadow:0 0 10px cyan;
 opacity:0.8;
 ">
-    Streaming RPG v1.0.3.
+    Streaming RPG v1.0.4.
 </div>
 
 <script>
@@ -909,6 +941,22 @@ const allStreamers = [
     ...starterCharacters,
     
     {
+        name: "Dejmcent",
+        image: "Dejmcent.png",
+        damage: 5,
+        hp: 19,
+        speed: 0.65
+    },
+    
+    {
+        name: "Dizowskyy",
+        image: "Dizowskyy.png",
+        damage: 6,
+        hp: 20,
+        speed: 0.4
+    },
+    
+    {
         name: "Kkamcia",
         image: "Kkamcia.png",
         damage: 4,
@@ -948,14 +996,28 @@ const allStreamers = [
         speed: 0.25
     },
     
+    {
+        name: "Wojan Games",
+        image: "Wojan Games.png",
+        damage: 5,
+        hp: 25,
+        speed: 0.35
+    },
+    
 ];
 
 const twitchPackPool = [
     "AlbiSuperBryka",
     "Arkadiojose",
+    "Dejmcent",
     "Kkamcia",
     "Nieuczesana",
     "Pablo"
+];
+
+const youtubePackPool = [
+    "Dizowskyy",
+    "Wojan Games",
 ];
 
 const enemies = {
@@ -982,6 +1044,12 @@ const enemies = {
     ],
 
     medium: [
+        {
+            name: "bartuzzzzzzz",
+            damage: 4,
+            hp: 18,
+            speed: 0.3
+        },
         {
             name: "jaworina",
             damage: 5,
@@ -1686,63 +1754,103 @@ function closeShop(){
 function buyTwitchPack(){
 
     if(money < 50){
-
         alert("Masz za mało zł!");
-
         return;
     }
 
     money -= 50;
 
-    document.getElementById("money").textContent =
-        money;
+    document.getElementById("money").textContent = money;
 
     const randomName =
         twitchPackPool[
-            Math.floor(
-                Math.random() *
-                twitchPackPool.length
-            )
+            Math.floor(Math.random() * twitchPackPool.length)
         ];
 
     const streamer =
-        allStreamers.find(
-            s => s.name === randomName
+        allStreamers.find(s => s.name === randomName);
+
+    if(streamer){
+
+        const alreadyOwned = ownedStreamers.some(
+            s => s.name === streamer.name
         );
 
-if(streamer){
+        if(alreadyOwned){
 
-    const alreadyOwned = ownedStreamers.some(
-        s => s.name === streamer.name
-    );
+            money += 2;
 
-    if(alreadyOwned){
+            document.getElementById("money").textContent = money;
 
-        money += 2;
+            alert(
+                "🎉 Trafiłeś:\n\n" +
+                streamer.name +
+                "\n\nMasz już tę postać!\nOtrzymujesz 2 zł."
+            );
 
-        document.getElementById("money").textContent =
-            money;
+        }else{
 
-        alert(
-            "🎉 Trafiłeś:\n\n" +
-            streamer.name +
-            "\n\nMasz już tę postać!\nOtrzymujesz 2 zł."
-        );
+            ownedStreamers.push(streamer);
 
-    }else{
+            alert(
+                "🎉 Trafiłeś:\n\n" +
+                streamer.name
+            );
+        }
 
-        ownedStreamers.push(streamer);
+        saveGame();
+    }
+} // 🔴 TO BYŁO BRAKOWANE!
 
-        alert(
-            "🎉 Trafiłeś:\n\n" +
-            streamer.name
-        );
+function buyYouTubePack(){
+
+    if(money < 100){
+        alert("Masz za mało zł!");
+        return;
     }
 
-    saveGame();
-}
+    money -= 100;
 
-    saveGame();
+    document.getElementById("money").textContent = money;
+
+    const randomName =
+        youtubePackPool[
+            Math.floor(Math.random() * youtubePackPool.length)
+        ];
+
+    const streamer =
+        allStreamers.find(s => s.name === randomName);
+
+    if(streamer){
+
+        const alreadyOwned = ownedStreamers.some(
+            s => s.name === streamer.name
+        );
+
+        if(alreadyOwned){
+
+            money += 2;
+
+            document.getElementById("money").textContent = money;
+
+            alert(
+                "📺 Trafiłeś:\n\n" +
+                streamer.name +
+                "\n\nMasz już tę postać!\n+2 zł"
+            );
+
+        }else{
+
+            ownedStreamers.push(streamer);
+
+            alert(
+                "📺 Trafiłeś:\n\n" +
+                streamer.name
+            );
+        }
+
+        saveGame();
+    }
 }
 
 window.onload = function(){
