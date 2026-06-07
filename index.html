@@ -163,162 +163,707 @@ button{
     object-fit:cover;
 }
 
+#teamContainer .card,
+#streamersContainer .card{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+    padding:10px;
+    transition:0.3s;
+    box-shadow:0 0 10px rgba(255,255,255,0.1);
+}
+
+#teamContainer .card:hover,
+#streamersContainer .card:hover{
+    transform:translateY(-5px) scale(1.05);
+    box-shadow:0 0 20px cyan;
+}
+
+#playerSide .battleCard,
+#enemySide .battleCard{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:18px;
+    padding:10px;
+    margin:10px;
+    transition:0.3s;
+    text-align:center;
+    color:white;
+}
+
+#playerSide .battleCard:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 20px cyan;
+}
+
+#enemySide .battleCard:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 20px red;
+}
+
+#battleArea img{
+    border-radius:15px;
+}
+
+#battleResult{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.shop-card{
+    max-width:350px;
+    margin:0 auto;
+    padding:25px;
+    border-radius:25px;
+
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    box-shadow:
+        0 0 25px rgba(255,215,0,0.4),
+        inset 0 0 10px rgba(255,255,255,0.1);
+
+    transition:0.3s;
+}
+
+.shop-card:hover{
+    transform:translateY(-5px) scale(1.03);
+    box-shadow:
+        0 0 40px rgba(255,215,0,0.7),
+        inset 0 0 10px rgba(255,255,255,0.15);
+}
+
+.shopBuyBtn{
+    background:linear-gradient(45deg,#00c853,#64dd17);
+    color:white;
+    border:none;
+    padding:14px 30px;
+    border-radius:15px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 15px #00ff88;
+    transition:0.25s;
+}
+
+.shopBuyBtn:hover{
+    transform:scale(1.05);
+}
+
+.backBtn{
+    margin-top:30px;
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    color:white;
+    border:none;
+    padding:12px 30px;
+    border-radius:15px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 15px #0072ff;
+    transition:0.25s;
+}
+
+.backBtn:hover{
+    transform:scale(1.05);
+}
+
+#playScreen button{
+    transition:0.25s;
+    cursor:pointer;
+}
+
+#playScreen button:hover{
+    transform:scale(1.05);
+}
+
+.menuButton{
+    background:linear-gradient(45deg,#00c853,#64dd17);
+    color:white;
+    border:none;
+    padding:15px 40px;
+    border-radius:15px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 20px #00ff88;
+    transition:0.25s;
+}
+
+.menuButton:hover{
+    transform:scale(1.05);
+}
+
+#nickname::placeholder{
+    color:#cccccc;
+}
+
+#starterCharacters .card{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:15px;
+    width:180px;
+    backdrop-filter:blur(10px);
+    transition:0.25s;
+    box-shadow:0 0 15px rgba(255,255,255,0.1);
+}
+
+#starterCharacters .card:hover{
+    transform:translateY(-5px) scale(1.05);
+    box-shadow:0 0 25px #00ff88;
+}
+
+##menu{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    min-height:100vh;
+}
+
+.menu-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.menu-header h1 {
+    font-size: 50px;
+    margin-bottom: 15px;
+    text-shadow:
+        0 0 15px #a855ff,
+        0 0 30px #a855ff;
+}
+
+.welcome {
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+.money-box {
+    display: inline-block;
+    background: rgba(255,255,255,0.08);
+    border: 2px solid gold;
+    border-radius: 15px;
+    padding: 12px 25px;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 0 20px gold;
+}
+
+.menu-buttons {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+}
+
+.menu-btn {
+    padding: 18px;
+    font-size: 22px;
+    color: white;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: .25s;
+    background: linear-gradient(
+        135deg,
+        #7b2ff7,
+        #4a00e0
+    );
+    box-shadow: 0 0 20px rgba(123,47,247,.5);
+}
+
+.menu-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #a855ff;
+}
+
+.play-btn {
+    background: linear-gradient(
+        135deg,
+        #00c853,
+        #009624
+    );
+    box-shadow: 0 0 25px #00ff88;
+}
+
+.play-btn:hover {
+    box-shadow: 0 0 35px #00ff88;
+}
+
+.danger-btn {
+    background: linear-gradient(
+        135deg,
+        #ff1744,
+        #b2102f
+    );
+}
+
+.danger-btn:hover {
+    box-shadow: 0 0 30px red;
+}
+
+.disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
 </style>
 </head>
 <body>
 
-<!-- Ekran logowania -->
-<div class="screen" id="login">
-    <h1>Streaming RPG</h1>
+<div class="screen" id="login" style="
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+color:white;
+">
 
-    <input type="text" id="nickname" placeholder="Wpisz nazwę użytkownika">
+    <h1 style="
+    font-size:50px;
+    color:#00ffff;
+    text-shadow:0 0 25px #00ffff;
+    margin-bottom:30px;
+    ">
+        🎥 Streaming RPG
+    </h1>
 
-    <button onclick="startGame()">Start</button>
+    <input
+        type="text"
+        id="nickname"
+        placeholder="Wpisz nazwę użytkownika"
+        style="
+        width:300px;
+        padding:15px;
+        border:none;
+        border-radius:15px;
+        background:rgba(255,255,255,0.1);
+        color:white;
+        text-align:center;
+        font-size:18px;
+        outline:none;
+        margin-bottom:20px;
+        "
+    >
+
+    <button onclick="startGame()" class="menuButton">
+        ▶ Start
+    </button>
+
 </div>
 
-<div class="screen" id="starterScreen" style="display:none;">
+<div class="screen" id="starterScreen" style="
+display:none;
+min-height:100vh;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+padding:25px;
+box-sizing:border-box;
+text-align:center;
+color:white;
+">
 
-    <h1>Wybierz Startowego Streamera</h1>
+    <h1 style="
+    color:#00ff88;
+    text-shadow:0 0 20px #00ff88;
+    margin-bottom:30px;
+    ">
+        ⭐ Wybierz Startowego Streamera
+    </h1>
 
-    <div id="starterCharacters"></div>
+    <div id="starterCharacters" style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    ">
+    </div>
 
 </div>
 
-<!-- Menu główne -->
 <div class="screen" id="menu">
-    <div class="welcome" id="welcomeText"></div>
-    
 
-    <div class="money">
-        💰 <span id="money">0</span> zł
+    <div class="menu-header">
+        <h1>🎥 Streaming RPG</h1>
+
+        <div class="welcome" id="welcomeText"></div>
+
+        <div class="money-box">
+            💰 <span id="money">0</span> zł
+        </div>
     </div>
 
     <div class="menu-buttons">
-        <button onclick="changeNick()">
-            Zmień Nick
+
+        <button class="menu-btn" onclick="changeNick()">
+            ✏️ Zmień Nick
         </button>
-        <button onclick="openStreamers()">Streamerzy</button>
-        <button>Coming Soon (Questy)</button>
-        <button onclick="openShop()">Sklep</button>
-        <button onclick="openPlayMenu()">Graj</button>
-        <button onclick="resetSave()">
-            Usuń Zapis
+
+        <button class="menu-btn" onclick="openStreamers()">
+            🎮 Streamerzy
         </button>
+
+        <button class="menu-btn disabled">
+            📜 Questy (Coming Soon)
+        </button>
+
+        <button class="menu-btn" onclick="openShop()">
+            🛒 Sklep
+        </button>
+
+        <button class="menu-btn play-btn" onclick="openPlayMenu()">
+            ⚔️ Graj
+        </button>
+
+        <button class="menu-btn danger-btn" onclick="resetSave()">
+            🗑 Usuń Zapis
+        </button>
+
     </div>
+
 </div>
 
-<!-- Ekran Streamerzy -->
-<div class="screen" id="streamersScreen" style="display:none;">
+<<div class="screen" id="streamersScreen" style="
+display:none;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+min-height:100vh;
+padding:20px;
+box-sizing:border-box;
+color:white;
+">
 
-    <h2 style="margin-bottom:30px;">
-        Twój Team (Max 4)
+  <h1 style="
+  text-align:center;
+  color:#00ffff;
+  text-shadow:0 0 15px #00ffff;
+  margin-bottom:25px;
+  ">
+    🎥 STREAMERZY
+  </h1>
+
+  <div style="
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:25px;
+  padding:20px;
+  margin-bottom:25px;
+  box-shadow:0 0 25px rgba(0,255,255,0.2);
+  ">
+
+    <h2 style="
+    text-align:center;
+    color:#ffffff;
+    margin-bottom:20px;
+    ">
+      ⭐ Twój Team
     </h2>
 
-    <div id="teamContainer" style="margin-bottom:120px;">
-    </div>
-
-    <div style="
-        position:fixed;
-        bottom:20px;
-        left:50%;
-        transform:translateX(-50%);
-        width:90%;
-        max-width:600px;
+    <div id="teamContainer" style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+    min-height:120px;
     ">
-        <h2 style="margin-bottom:15px;">
-            Twoi Streamerzy
-        </h2>
-
-        <div id="streamersContainer"></div>
     </div>
 
-    <button onclick="backToMenu()" style="margin-top:30px;">
-        Powrót
+  </div>
+
+  <div style="
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:25px;
+  padding:20px;
+  box-shadow:0 0 25px rgba(255,255,255,0.1);
+  ">
+
+    <h2 style="
+    text-align:center;
+    color:#00ff88;
+    text-shadow:0 0 10px #00ff88;
+    margin-bottom:20px;
+    ">
+      🎬 Twoi Streamerzy
+    </h2>
+
+    <div id="streamersContainer" style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:15px;
+    max-height:400px;
+    overflow-y:auto;
+    padding:10px;
+    ">
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:25px;">
+    <button onclick="backToMenu()" style="
+    background:linear-gradient(45deg,#00c6ff,#0072ff);
+    border:none;
+    color:white;
+    font-size:18px;
+    padding:12px 30px;
+    border-radius:15px;
+    cursor:pointer;
+    font-weight:bold;
+    box-shadow:0 0 15px #0072ff;
+    transition:0.3s;
+    ">
+      ⬅ Powrót
     </button>
+  </div>
 
 </div>
 
-<div class="screen" id="shopScreen" style="display:none;">
+<div class="screen" id="shopScreen" style="
+display:none;
+min-height:100vh;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+padding:25px;
+box-sizing:border-box;
+text-align:center;
+color:white;
+">
 
-    <h1>Sklep</h1>
+    <h1 style="
+    color:#ffd700;
+    text-shadow:0 0 20px gold;
+    margin-bottom:30px;
+    ">
+        🛒 SKLEP
+    </h1>
 
-    <div class="streamer-card">
+    <div class="shop-card">
 
-        <h2>📦 Twitch</h2>
+        <div style="font-size:60px;">📦</div>
 
-        <p>Cena: 50</p>
+        <h2>Twitch Pack</h2>
 
-        <button onclick="buyTwitchPack()">
-            Kup
+        <p style="font-size:20px;">
+            Cena: <span style="color:gold;">50 Coins</span>
+        </p>
+
+        <button class="shopBuyBtn" onclick="buyTwitchPack()">
+            Kup Paczkę
         </button>
 
     </div>
 
-    <br>
-
-    <button onclick="closeShop()">
-        Powrót
+    <button class="backBtn" onclick="closeShop()">
+        ⬅ Powrót
     </button>
 
 </div>
 
-<div class="screen" id="playScreen" style="display:none;">
+<div class="screen" id="playScreen" style="
+display:none;
+min-height:100vh;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+padding:30px;
+box-sizing:border-box;
+text-align:center;
+color:white;
+">
 
-    <h1>Wybierz Poziom</h1>
+    <h1 style="
+    color:#00ffff;
+    text-shadow:0 0 20px #00ffff;
+    margin-bottom:40px;
+    ">
+        🎮 Wybierz Poziom
+    </h1>
 
-    <button
-        style="background:green;"
-        onclick="playDifficulty('easy')">
-        Easy
-    </button>
+    <div style="
+    max-width:500px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+    ">
 
-    <button
-        id="mediumBtn"
-        style="background:gold;"
-        onclick="playDifficulty('medium')">
-        Medium 🔒
-    </button>
+        <button
+            onclick="playDifficulty('easy')"
+            style="
+            background:linear-gradient(45deg,#00c853,#64dd17);
+            color:white;
+            font-size:24px;
+            font-weight:bold;
+            border:none;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 0 20px #00ff88;
+            ">
+            🟢 Easy
+        </button>
 
-    <button
-        id="hardBtn"
-        style="background:red;"
-        onclick="playDifficulty('hard')">
-        Hard 🔒
-    </button>
+        <button
+            id="mediumBtn"
+            onclick="playDifficulty('medium')"
+            style="
+            background:linear-gradient(45deg,#ffb300,#ffd54f);
+            color:white;
+            font-size:24px;
+            font-weight:bold;
+            border:none;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 0 20px gold;
+            ">
+            🟡 Medium 🔒
+        </button>
 
-    <button
-        id="impossibleBtn"
-        style="background:darkred;"
-        onclick="playDifficulty('impossible')">
-        Inposible 🔒
-    </button>
+        <button
+            id="hardBtn"
+            onclick="playDifficulty('hard')"
+            style="
+            background:linear-gradient(45deg,#ff5252,#ff1744);
+            color:white;
+            font-size:24px;
+            font-weight:bold;
+            border:none;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 0 20px red;
+            ">
+            🔴 Hard 🔒
+        </button>
 
-    <br><br>
-
-    <button onclick="backFromPlay()">
-        Powrót
-    </button>
-
-</div>
-
-<div class="screen" id="battleScreen" style="display:none;">
-
-    <h1>Walka</h1>
-
-    <div id="battleArea">
-
-        <div id="playerSide"></div>
-
-        <div id="enemySide"></div>
+        <button
+            id="impossibleBtn"
+            onclick="playDifficulty('impossible')"
+            style="
+            background:linear-gradient(45deg,#5d0000,#b71c1c);
+            color:white;
+            font-size:24px;
+            font-weight:bold;
+            border:none;
+            border-radius:20px;
+            padding:20px;
+            box-shadow:0 0 25px darkred;
+            ">
+            ☠ Impossible 🔒
+        </button>
 
     </div>
 
-    <h2 id="battleResult"></h2>
+    <button
+        onclick="backFromPlay()"
+        style="
+        margin-top:40px;
+        background:linear-gradient(45deg,#00c6ff,#0072ff);
+        color:white;
+        border:none;
+        border-radius:15px;
+        padding:12px 30px;
+        font-size:18px;
+        font-weight:bold;
+        box-shadow:0 0 15px #0072ff;
+        ">
+        ⬅ Powrót
+    </button>
 
 </div>
 
-<div id="footerText">
-    Streaming RPG v1.0.2
+<div class="screen" id="battleScreen" style="
+display:none;
+min-height:100vh;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+padding:20px;
+box-sizing:border-box;
+color:white;
+">
+
+    <h1 style="
+    text-align:center;
+    color:#ff4444;
+    text-shadow:0 0 20px #ff4444;
+    margin-bottom:25px;
+    ">
+        ⚔ WALKA ⚔
+    </h1>
+
+    <div id="battleArea" style="
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    ">
+
+        <div id="playerSide" style="
+        width:48%;
+        min-height:400px;
+        background:rgba(0,255,255,0.08);
+        border:2px solid rgba(0,255,255,0.3);
+        border-radius:25px;
+        padding:15px;
+        backdrop-filter:blur(12px);
+        box-shadow:0 0 25px rgba(0,255,255,0.25);
+        ">
+        </div>
+        
+        <div style="
+        position:absolute;
+        left:50%;
+        top:45%;
+        transform:translate(-50%,-50%);
+        font-size:50px;
+        font-weight:bold;
+        color:white;
+        text-shadow:0 0 20px gold;
+        pointer-events:none;
+        ">
+        VS
+        </div>
+
+        <div id="enemySide" style="
+        width:48%;
+        min-height:400px;
+        background:rgba(255,0,0,0.08);
+        border:2px solid rgba(255,0,0,0.3);
+        border-radius:25px;
+        padding:15px;
+        backdrop-filter:blur(12px);
+        box-shadow:0 0 25px rgba(255,0,0,0.25);
+        ">
+        </div>
+
+    </div>
+
+    <h2 id="battleResult" style="
+    text-align:center;
+    margin-top:25px;
+    color:#ffffff;
+    text-shadow:0 0 10px white;
+    min-height:40px;
+    ">
+    </h2>
+
+</div>
+
+<div id="footerText" style="
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+color:#ffffff;
+font-size:14px;
+letter-spacing:2px;
+text-shadow:0 0 10px cyan;
+opacity:0.8;
+">
+    Streaming RPG v1.0.3.
 </div>
 
 <script>
