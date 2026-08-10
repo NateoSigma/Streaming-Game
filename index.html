@@ -509,6 +509,10 @@ color:white;
         <button class="menu-btn" onclick="openStreamers()">
             🎮 Streamerzy
         </button>
+		
+        <button class="menu-btn" onclick="window.location.href='enemies.html'">
+            👾 Opis Przeciwników
+        </button>
 
         <button class="menu-btn disabled">
             📜 Questy (Coming Soon)
@@ -701,6 +705,12 @@ color:white;
             <p>Cena: 600 zł</p>
             <button onclick="buyPoliticsPack()">Kup Paczkę</button>
         </div>
+		
+		<div class="streamer-card">
+            <h2>🎵 Tik Tok</h2>
+            <p>Cena: 1000 zł</p>
+			<button onclick="buyTikTokPack()">Kup Paczkę</button>
+        </div>
 
     </div>
 
@@ -751,7 +761,7 @@ color:white;
             padding:20px;
             box-shadow:0 0 20px #00ff88;
             ">
-            🟢 Easy
+            Easy
         </button>
 
         <button
@@ -767,7 +777,7 @@ color:white;
             padding:20px;
             box-shadow:0 0 20px gold;
             ">
-            🟡 Medium 🔒
+            Medium 🔒
         </button>
 
         <button
@@ -783,7 +793,7 @@ color:white;
             padding:20px;
             box-shadow:0 0 20px red;
             ">
-            🔴 Hard 🔒
+            Hard 🔒
         </button>
 
         <button
@@ -799,7 +809,7 @@ color:white;
             padding:20px;
             box-shadow:0 0 25px darkred;
             ">
-            ☠ Impossible 🔒
+            4Impossible 🔒
         </button>
 
     </div>
@@ -909,7 +919,7 @@ letter-spacing:2px;
 text-shadow:0 0 10px cyan;
 opacity:0.8;
 ">
-    Streaming RPG v1.0.5
+    Streaming RPG v1.0.6
 </div>
 
 <script>
@@ -957,6 +967,14 @@ const allStreamers = [
     {
         name: "AjronekTV",
         image: "AjronekTV.png",
+        damage: 4,
+        hp: 19,
+        speed: 0.5
+    },
+	
+	{
+        name: "Alan Becker",
+        image: "Alan Becker.png",
         damage: 8,
         hp: 18,
         speed: 0.5
@@ -1017,6 +1035,22 @@ const allStreamers = [
         damage: 4,
         hp: 18,
         speed: 0.45
+    },
+    
+    {
+        name: "Natekgry",
+        image: "Natekgry.png",
+        damage: 7,
+        hp: 21,
+        speed: 0.67
+    },
+	
+	{
+        name: "Natunialesbunia",
+        image: "Natunialesbunia.png",
+        damage: 8,
+        hp: 22,
+        speed: 0.37
     },
     
     {
@@ -1095,13 +1129,15 @@ const allStreamers = [
         name: "Young Multi",
         image: "Young Multi.png",
         damage: 7,
-        hp: 18,
-        speed: 0.8
+        hp: 22,
+        speed: 0.4
     },
     
 ];
 
 const twitchPackPool = [
+    "AjronekTV",
+    "AlbiSuperBryka",
     "Dejmcent",
     "Diables",
     "Gulczyk_",
@@ -1112,23 +1148,28 @@ const twitchPackPool = [
 ];
 
 const youtubePackPool = [
-    "AjronekTV",
+    "Alan Becker",
     "ArQuel",
     "Dizowskyy",
+    "Natekgry",
     "Palion",
     "Wojan Games",
 ];
 
 const musicPackPool = [
     "TryHardNinja",
-    "Young Multi"
+    "Young Multi",
 ];
 
 const politicsPackPool = [
     "Grzegorz",
     "Rafał",
     "Sławomir",
-    "Szymon"
+    "Szymon",
+];
+
+const tikTokPackPool = [
+    "Natunialesbunia",
 ];
 
 const enemies = {
@@ -1211,7 +1252,7 @@ const enemies = {
             name: "kaopeja",
             damage: 10,
             hp: 23,
-            speed: 0.4
+            speed: 0.55
         },
     ]
 
@@ -1227,6 +1268,30 @@ const deathSounds = [
     "Death (7).mp3",
     "Death (8).mp3",
     "Death (9).mp3"
+];
+
+const viralEvents = [
+
+    {
+        text: "💸 Sponsorem dzisiejszej wygranej jest Nerd",
+        reward: 24
+    },
+
+    {
+        text: "💸 Sponsorem dzisiejszej wygranej jest Pipa",
+        reward: 12
+    },
+
+    {
+        text: "💸 Sponsorem dzisiejszej wygranej jest Orange",
+        reward: 35
+    },
+
+    {
+        text: "💸 Sponsorem dzisiejszej wygranej jest Pop",
+        reward: 7
+    }
+
 ];
 
 let easyGames = 0;
@@ -1512,13 +1577,11 @@ function backFromPlay(){
 
 function checkUnlocks(){
 
-    // Medium
     if(!mediumUnlocked && easyGames >= 15){
         mediumUnlocked = true;
         alert("Odblokowano Medium!");
     }
 
-    // Hard
     if(
         mediumUnlocked &&
         !hardUnlocked &&
@@ -1529,7 +1592,6 @@ function checkUnlocks(){
         alert("Odblokowano Hard!");
     }
 
-    // Inposible
     if(
         hardUnlocked &&
         !impossibleUnlocked &&
@@ -1713,11 +1775,34 @@ function finishBattle(result){
 
 if(result === "win"){
 
-    playRandomDeathSound(); // 🔊 DŹWIĘK WYGRANEJ
+    playRandomDeathSound();
 
     const reward = getReward(currentDifficulty);
 
     money += reward;
+
+    document.getElementById("money").textContent = money;
+
+    if(Math.random() < 0.1){
+
+        const event =
+            viralEvents[
+                Math.floor(
+                    Math.random() *
+                    viralEvents.length
+                )
+            ];
+
+        money += event.reward;
+
+        alert(
+            event.text +
+            "\n" +
+            (event.reward >= 0 ? "+" : "") +
+            event.reward +
+            " zł"
+        );
+    }
 
     document.getElementById("money").textContent = money;
 
@@ -1923,7 +2008,7 @@ function buyTwitchPack(){
 
         saveGame();
     }
-} // 🔴 TO BYŁO BRAKOWANE!
+}
 
 function buyYouTubePack(){
 
@@ -2050,6 +2135,53 @@ function buyPoliticsPack(){
             ownedStreamers.push(streamer);
 
             alert("🏛 Trafiłeś:\n\n" + streamer.name);
+        }
+
+        saveGame();
+    }
+}
+
+function buyTikTokPack() {
+
+    if (money < 600) {
+        alert("Masz za mało zł!");
+        return;
+    }
+
+    money -= 600;
+    document.getElementById("money").textContent = money;
+
+    const randomName =
+        tikTokPackPool[Math.floor(Math.random() * tikTokPackPool.length)];
+
+    const streamer =
+        allStreamers.find(s => s.name === randomName);
+
+    if (streamer) {
+
+        const alreadyOwned = ownedStreamers.some(
+            s => s.name === streamer.name
+        );
+
+        if (alreadyOwned) {
+
+            money += 2;
+            document.getElementById("money").textContent = money;
+
+            alert(
+                "🎵 Trafiłeś:\n\n" +
+                streamer.name +
+                "\n\nDuplikat! +2 zł"
+            );
+
+        } else {
+
+            ownedStreamers.push(streamer);
+
+            alert(
+                "🎵 Trafiłeś:\n\n" +
+                streamer.name
+            );
         }
 
         saveGame();

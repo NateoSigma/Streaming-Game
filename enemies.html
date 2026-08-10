@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeria</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#202020;
+    color:white;
+}
+
+/* Lewe menu */
+#menu{
+    width:220px;
+    background:#2d2d2d;
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+#menu button{
+    padding:12px;
+    font-size:18px;
+    cursor:pointer;
+    border:none;
+    background:#4b4b4b;
+    color:white;
+    border-radius:8px;
+    transition:.2s;
+}
+
+#menu button:hover{
+    background:#6a6a6a;
+}
+
+/* Prawa część */
+#content{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#card{
+    display:flex;
+    align-items:flex-start;
+    gap:25px;
+    background:#2c2c2c;
+    padding:25px;
+    border-radius:15px;
+    width:80%;
+    max-width:900px;
+}
+
+#card img{
+    width:300px;
+    height:300px;
+    object-fit:contain;
+    background:#1b1b1b;
+    border-radius:10px;
+}
+
+#text{
+    flex:1;
+}
+
+#title{
+    font-size:34px;
+    margin-bottom:15px;
+}
+
+#description{
+    font-size:18px;
+    line-height:1.6;
+}
+</style>
+
+</head>
+<body>
+
+<div id="menu">
+    <button onclick="pokaz(0)">bartuzzzzzzz</button>
+    <button onclick="pokaz(1)">kaopeja</button>
+    <button onclick="pokaz(2)">zikus98</button>
+</div>
+
+<div id="content">
+    <div id="card">
+        <img id="image" src="bartuzzzzzzz.png">
+
+        <div id="text">
+            <h1 id="title">bartuzzzzzzz</h1>
+            <p id="description">
+                Bartek to jeden z drużyny gejmerskiej o nazwie: Dejmeni. Grają oni zazwyczaj w League of Legends gdzie są jedną z naj większych drużyn w Polsce. Urodził się w 2007 w 6 lipca, mieszkał on w Warszawie teraż przeprowadził się do Ksawerowa że swoją dziewczyną Zikus.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+
+const dane = [
+{
+    obraz:"bartuzzzzzzz.png",
+    tytul:"bartuzzzzzzz",
+    opis:"Bartek to jeden z drużyny gejmerskiej o nazwie: Dejmeni. Grają oni zazwyczaj w League of Legends gdzie są jedną z naj większych drużyn w Polsce. Urodził się w 2007 w 6 lipca, mieszkał on w Warszawie teraż przeprowadził się do Ksawerowa że swoją dziewczyną Zikus."
+},
+{
+    obraz:"kaopeja.png",
+    tytul:"kaopeja",
+    opis:"Kapi to policjant który zajmuje się łapaniem pedofilów."
+},
+{
+    obraz:"zikus98.png",
+    tytul:"zikus98",
+    opis:"Ziki to dziewczyna która nie zabardzo chce gadać z innym dziewczynami, bardziej woli rozmawiać z chłopakami."
+},
+
+];
+
+function pokaz(n){
+    document.getElementById("image").src = dane[n].obraz;
+    document.getElementById("title").textContent = dane[n].tytul;
+    document.getElementById("description").textContent = dane[n].opis;
+}
+
+</script>
+
+</body>
+</html>
